@@ -1,0 +1,35 @@
+{
+  "name": "ts-math",
+  "version": "1.0.0",
+  "description": "a typescript math library for games.",
+  "main": "./built/ts-math.js",
+  "types": "./built/ts-math.d.ts",
+  "scripts": {
+    "clean": "rimraf ./built/*",
+    "build": "npm run clean & tsc",
+    "pretest": "npm run build",
+    "test": "mocha built/test/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nshen/ts-math.git"
+  },
+  "keywords": [
+    "typescript",
+    "math",
+    "game"
+  ],
+  "author": "nshen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nshen/ts-math/issues"
+  },
+  "homepage": "https://github.com/nshen/ts-math#readme",
+  "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.33",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "rimraf": "^2.5.4"
+  }
+}
