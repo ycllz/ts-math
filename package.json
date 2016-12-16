@@ -2,13 +2,15 @@
   "name": "ts-math",
   "version": "1.0.0",
   "description": "a typescript math library for games.",
-  "main": "./built/ts-math.js",
-  "types": "./built/ts-math.d.ts",
+  "main": "./built/index.js",
+  "types": "./built/index.d.ts",
   "scripts": {
     "clean": "rimraf ./built/*",
-    "build": "npm run clean & tsc",
+    "prebuild": "npm run clean",
+    "build": "tsc",
     "pretest": "npm run build",
-    "test": "mocha built/test/**/*.js"
+    "test": "mocha built/test/**/*.js",
+    "docs": "typedoc --out ./docs ./src --readme ./README.md --module commonjs --target ES5 --theme minimal"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,8 @@
     "@types/mocha": "^2.2.33",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
-    "rimraf": "^2.5.4"
+    "rimraf": "^2.5.4",
+    "typedoc": "^0.5.1",
+    "typescript": "^2.1.4"
   }
 }

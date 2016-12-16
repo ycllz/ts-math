@@ -2,13 +2,14 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es5",
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "sourceMap": true,
-        "outDir": "built/",
-        "declaration": true
+        "declaration": true,
+        "outDir": "./built",
+        "moduleResolution": "node"
     },
-     "include": [
-        "./test/**/*.ts",
-        "./src/**/*.ts"
+    "include": [
+        "./index.ts",
+        "./test/**/*.ts"
     ]
 }

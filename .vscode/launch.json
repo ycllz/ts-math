@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "启动程序",
-            "program": "${workspaceRoot}\\built\\ts-math.js",
+            "program": "${workspaceRoot}\\built\\index.js",
             "cwd": "${workspaceRoot}",
             "outFiles": [],
             "sourceMaps": true
@@ -37,7 +37,9 @@
                 "--nolazy"
             ],
             "sourceMaps": true,
-            "outDir": "${workspaceRoot}\\built\\test"
+            "outFiles": [
+                "${workspaceRoot}\\built\\test\\**\\*.test.js"
+            ]
         }
     ]
 }
