@@ -29,6 +29,9 @@ export class Vector2D {
 
     /**
      * 返回一个指定长度的随机方向向量
+     * @static
+     * @param scale 向量长度，默认为1
+     * @param out 省略则返回一个新创建的 Vector2D 否则复制到 out 向量
      */
     public static Random(scale: number = 1, out: Vector2D = undefined): Vector2D {
         let r: number = Math.random() * 2 * Math.PI;
@@ -43,12 +46,28 @@ export class Vector2D {
     }
 
     /**
-     * 取得两向量之间夹角的弧度值，逆时针为正
+     * 取得两向量之间夹角的弧度值，逆时针为正    
+     * @static 
+     * @param {Vector2D} v1
+     * @param {Vector2D} v2
+     * @returns {number} 两向量之间夹角，单位为弧度得
+     * 
+     * @memberOf Vector2D
      */
     public static AngleBetween(v1: Vector2D, v2: Vector2D): number {
         return Math.atan2(v1.cross(v2), v1.dot(v2)); //  tan = sin / cos
     }
 
+    /**
+     * 极坐标转换为笛卡尔坐标 
+     * 
+     * @static
+     * @param {number} len 半径长度
+     * @param {number} radians 弧度值
+     * @returns
+     * 
+     * @memberOf Vector2D
+     */
     public static fromPolar(len: number, radians: number) {
         return new Vector2D(len * Math.cos(radians), len * Math.sin(radians));
     }
@@ -58,11 +77,17 @@ export class Vector2D {
 
     /**
      * 取向量长度
+     * @type {number}
+     * @memberOf Vector2D
      */
     public get length(): number {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
+    /**
+     * 设置向量长度
+     * @memberOf Vector2D
+     */
     public set length(value: number) {
         let angle: number = Math.atan2(this.y, this.x);
         this.x = Math.cos(angle) * value;
@@ -71,6 +96,9 @@ export class Vector2D {
 
     /**
      * 取向量长度的平方，由于不用开方运算，效率更高
+     * @readonly
+     * @type {number}
+     * @memberOf Vector2D
      */
     public get squaredLength(): number {
         return this.x * this.x + this.y * this.y;
@@ -78,6 +106,9 @@ export class Vector2D {
 
     /**
      * 是否为0向量
+     * @readonly
+     * @type {boolean}
+     * @memberOf Vector2D
      */
     public get isZero(): boolean {
         return ((this.x === 0) && (this.y === 0));
@@ -87,7 +118,13 @@ export class Vector2D {
     // ----------------------------------------
 
     /**
-     * out = this + v
+     * 向量相加
+     * 
+     * @param {Vector2D} v
+     * @param {Vector2D} [out=undefined]  省略则返回一个新创建的 Vector2D 否则复制到 out 向量
+     * @returns {Vector2D} out = this + v
+     * 
+     * @memberOf Vector2D
      */
     public add(v: Vector2D, out: Vector2D = undefined): Vector2D {
         let nx: number = this.x + v.x;
@@ -101,7 +138,10 @@ export class Vector2D {
     }
 
     /**
-     * out = this - v
+     * 向量相减
+     * @param {Vector2D} v
+     * @param {Vector2D} [out=undefined]  省略则返回一个新创建的 Vector2D 否则复制到 out 向量
+     * @return {Vector2D} out = this - v
      */
     public subtract(v: Vector2D, out: Vector2D = undefined): Vector2D {
 
@@ -116,7 +156,12 @@ export class Vector2D {
     }
 
     /**
-     * out = this multiply v
+     * 向量相乘
+     * @param {Vector2D} v
+     * @param {Vector2D} [out=undefined] 省略则返回一个新创建的 Vector2D 否则复制到 out 向量
+     * @returns {Vector2D} out = this multiply v 
+     * 
+     * @memberOf Vector2D
      */
     public multiply(v: Vector2D, out: Vector2D = undefined): Vector2D {
         let nx: number = this.x * v.x;
@@ -130,7 +175,13 @@ export class Vector2D {
     }
 
     /**
-     * out  = this / v
+     * 向量相除
+     * 
+     * @param {Vector2D} v
+     * @param {Vector2D} [out=undefined] 省略则返回一个新创建的 Vector2D 否则复制到 out 向量
+     * @returns {Vector2D} out  = this / v
+     * 
+     * @memberOf Vector2D
      */
     public divide(v: Vector2D, out: Vector2D = undefined): Vector2D {
         let nx: number = this.x / v.x;
@@ -145,7 +196,13 @@ export class Vector2D {
     }
 
     /**
-     * out = this * s
+     * 缩放向量
+     * 
+     * @param {number} s
+     * @param {Vector2D} [out=undefined]
+     * @returns {Vector2D} out = this * s
+     * 
+     * @memberOf Vector2D
      */
     public scale(s: number, out: Vector2D = undefined): Vector2D {
         let nx: number = this.x * s;
@@ -160,7 +217,7 @@ export class Vector2D {
 
     /**
      * 基于某个点缩放
-     * 
+     * todo: 图形实例
      * @param {Vector2D} point 基于该点缩放
      * @param {number} sx (description)
      * @param {number} sy (description)
@@ -184,7 +241,13 @@ export class Vector2D {
     }
 
     /**
-     * Adds two vec2's after scaling the second operand by a scalar value
+     * 与缩放过的v相加
+     * @param {Vector2D} v
+     * @param {number} scale
+     * @param {Vector2D} [out=undefined]
+     * @returns {Vector2D}
+     * 
+     * @memberOf Vector2D
      */
     public scaleAndAdd(v: Vector2D, scale: number, out: Vector2D = undefined): Vector2D {
 
@@ -216,13 +279,17 @@ export class Vector2D {
         return x * x + y * y;
     }
 
-    public negate(out: Vector2D = undefined): Vector2D {
-        if (out === undefined) {
-            return new Vector2D(-this.x, -this.y);
-        }
-        out.x = -this.x;
-        out.y = -this.y;
-        return out;
+    /**
+     * 取负，修改自身的xy
+     * todo: 测试
+     * @returns {Vector2D}
+     * 
+     * @memberOf Vector2D
+     */
+    public negate(): Vector2D {
+        this.x = -this.x;
+        this.y = -this.y;
+        return this;
     }
 
     /**

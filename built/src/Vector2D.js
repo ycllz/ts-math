@@ -28,6 +28,9 @@ var Vector2D = (function () {
     };
     /**
      * 返回一个指定长度的随机方向向量
+     * @static
+     * @param scale 向量长度，默认为1
+     * @param out 省略则返回一个新创建的 Vector2D 否则复制到 out 向量
      */
     Vector2D.Random = function (scale, out) {
         if (scale === void 0) { scale = 1; }
@@ -44,10 +47,26 @@ var Vector2D = (function () {
     };
     /**
      * 取得两向量之间夹角的弧度值，逆时针为正
+     * @static
+     * @param {Vector2D} v1
+     * @param {Vector2D} v2
+     * @returns {number} 两向量之间夹角，单位为弧度得
+     *
+     * @memberOf Vector2D
      */
     Vector2D.AngleBetween = function (v1, v2) {
         return Math.atan2(v1.cross(v2), v1.dot(v2)); //  tan = sin / cos
     };
+    /**
+     * 极坐标转换为笛卡尔坐标
+     *
+     * @static
+     * @param {number} len 半径长度
+     * @param {number} radians 弧度值
+     * @returns
+     *
+     * @memberOf Vector2D
+     */
     Vector2D.fromPolar = function (len, radians) {
         return new Vector2D(len * Math.cos(radians), len * Math.sin(radians));
     };
@@ -56,10 +75,16 @@ var Vector2D = (function () {
         // ------------------------------------------
         /**
          * 取向量长度
+         * @type {number}
+         * @memberOf Vector2D
          */
         get: function () {
             return Math.sqrt(this.x * this.x + this.y * this.y);
         },
+        /**
+         * 设置向量长度
+         * @memberOf Vector2D
+         */
         set: function (value) {
             var angle = Math.atan2(this.y, this.x);
             this.x = Math.cos(angle) * value;

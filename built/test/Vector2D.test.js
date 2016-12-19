@@ -1,6 +1,7 @@
 "use strict";
 var chai_1 = require("chai");
 var Vector2D_1 = require("../src/Vector2D");
+// some test are based on glmatrix
 describe("Vector2D test", function () {
     var vecA;
     var vecB;
@@ -18,7 +19,7 @@ describe("Vector2D test", function () {
         describe("with a separate output vector", function () {
             beforeEach(function () { result = Vector2D_1.Vector2D.Lerp(vecA, vecB, 0.5, out); });
             it("should place values into out", function () { chai_1.expect(out).to.deep.equal(new Vector2D_1.Vector2D(2, 3)); }); // deep equal
-            it("should return out", function () { chai_1.expect(result).to.equal(out); }); // ref
+            it("should return out", function () { chai_1.expect(result).to.equal(out); }); // same ref
             it("should not modify vecA", function () { chai_1.expect(vecA).to.deep.equal(new Vector2D_1.Vector2D(1, 2)); });
             it("should not modify vecB", function () { chai_1.expect(vecB).to.deep.equal(new Vector2D_1.Vector2D(3, 4)); });
         });
@@ -81,6 +82,16 @@ describe("Vector2D test", function () {
         });
         describe("with CW", function () {
             beforeEach(function () {
+                vecA = new Vector2D_1.Vector2D(0, 10);
+                vecB = new Vector2D_1.Vector2D(4, 4);
+                num = Vector2D_1.Vector2D.AngleBetween(vecA, vecB);
+            });
+            it("it should return -45 degrees ", function () {
+                chai_1.expect(num).to.equal(-Math.PI / 4);
+            });
+        });
+        describe("with CW", function () {
+            beforeEach(function () {
                 vecA = new Vector2D_1.Vector2D(4, -4);
                 vecB = new Vector2D_1.Vector2D(-100, -100);
                 num = Vector2D_1.Vector2D.AngleBetween(vecA, vecB);
@@ -90,12 +101,22 @@ describe("Vector2D test", function () {
             });
         });
     });
+    describe("fromPolar", function () {
+        it("it should return yaxis", function () {
+            chai_1.expect(Vector2D_1.Vector2D.fromPolar(1, 0).x).to.closeTo(new Vector2D_1.Vector2D(1, 0).x, EPSILON);
+            chai_1.expect(Vector2D_1.Vector2D.fromPolar(1, 0).y).to.closeTo(new Vector2D_1.Vector2D(1, 0).y, EPSILON);
+        });
+        it("it should return xaxis", function () {
+            chai_1.expect(Vector2D_1.Vector2D.fromPolar(1, Math.PI / 2).x).to.closeTo(new Vector2D_1.Vector2D(0, 1).x, EPSILON);
+            chai_1.expect(Vector2D_1.Vector2D.fromPolar(1, Math.PI / 2).y).to.closeTo(new Vector2D_1.Vector2D(0, 1).y, EPSILON);
+        });
+    });
     // getter
     describe("length", function () {
         beforeEach(function () {
             vecB.length = vecA.length;
         });
-        it("should return the length", function () { chai_1.expect(vecA.length).to.closeTo(2.236067, EPSILON); });
+        it("should return the length", function () { chai_1.expect(vecA.length).to.closeTo(Math.sqrt(vecA.x * vecA.x + vecA.y * vecA.y), EPSILON); });
         it("should set vecB length equal to vecA", function () { chai_1.expect(vecA.length).to.closeTo(vecB.length, EPSILON); });
     });
     describe("lengthSquared", function () {

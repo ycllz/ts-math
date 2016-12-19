@@ -10,15 +10,40 @@ export declare class Vector2D {
     static Lerp(v1: Vector2D, v2: Vector2D, t?: number, out?: Vector2D): Vector2D;
     /**
      * 返回一个指定长度的随机方向向量
+     * @static
+     * @param scale 向量长度，默认为1
+     * @param out 省略则返回一个新创建的 Vector2D 否则复制到 out 向量
      */
     static Random(scale?: number, out?: Vector2D): Vector2D;
     /**
      * 取得两向量之间夹角的弧度值，逆时针为正
+     * @static
+     * @param {Vector2D} v1
+     * @param {Vector2D} v2
+     * @returns {number} 两向量之间夹角，单位为弧度得
+     *
+     * @memberOf Vector2D
      */
     static AngleBetween(v1: Vector2D, v2: Vector2D): number;
+    /**
+     * 极坐标转换为笛卡尔坐标
+     *
+     * @static
+     * @param {number} len 半径长度
+     * @param {number} radians 弧度值
+     * @returns
+     *
+     * @memberOf Vector2D
+     */
     static fromPolar(len: number, radians: number): Vector2D;
     /**
      * 取向量长度
+     * @type {number}
+     * @memberOf Vector2D
+     */
+    /**
+     * 设置向量长度
+     * @memberOf Vector2D
      */
     length: number;
     /**
