@@ -1,7 +1,7 @@
 "use strict";
 var chai_1 = require("chai");
 var Vector2D_1 = require("../src/Vector2D");
-// some test are based on glmatrix
+// some tests are based on glmatrix
 describe("Vector2D test", function () {
     var vecA;
     var vecB;
@@ -351,52 +351,33 @@ describe("Vector2D test", function () {
         it("should return the squared distance", function () { chai_1.expect(dis).to.equal(8); });
     });
     describe("negate", function () {
-        describe("with a separate output vector", function () {
-            beforeEach(function () {
-                result = vecA.negate(out);
-            });
-            it("should place values into out", function () {
-                chai_1.expect(out).to.deep.equal(new Vector2D_1.Vector2D(-1, -2));
-            });
-            it("should return out", function () { chai_1.expect(result).to.equal(out); });
-            it("should not modify vecA", function () { chai_1.expect(vecA).to.deep.equal(new Vector2D_1.Vector2D(1, 2)); });
+        var x, y;
+        beforeEach(function () {
+            x = -vecA.x;
+            y = -vecA.y;
+            vecA.negate();
         });
-        describe("when vecA is the output vector", function () {
-            beforeEach(function () { result = vecA.negate(vecA); });
-            it("should place values into vecA", function () {
-                chai_1.expect(vecA).to.deep.equal(new Vector2D_1.Vector2D(-1, -2));
-            });
-            it("should return vecA", function () { chai_1.expect(result).to.equal(vecA); });
+        it("should negate x", function () {
+            chai_1.expect(vecA.x).to.equal(x);
         });
-        describe("without output vector", function () {
-            beforeEach(function () { result = vecA.negate(); });
-            it("should not modify vecA", function () { chai_1.expect(vecA).to.deep.equal(new Vector2D_1.Vector2D(1, 2)); });
-            it("should return a new vector", function () {
-                chai_1.expect(result).to.deep.equal(new Vector2D_1.Vector2D(-1, -2));
-            });
+        it("should negate y", function () {
+            chai_1.expect(vecA.y).to.equal(y);
         });
     });
-    // describe("normalize", () => {
-    //     beforeEach(() => { vecA = new Vector2D(5, 0); });
-    //     describe("with a separate output vector", () => {
-    //         beforeEach(() => { result = vecA.normalize(out); });
-    //         it("should place values into out", () => { expect(out).to.deep.equal(new Vector2D(1, 0)); });
-    //         it("should return out", () => { expect(result).to.equal(out); });
-    //         it("should not modify vecA", () => { expect(vecA).to.deep.equal(new Vector2D(5, 0)); });
-    //     });
-    //     describe("when vecA is the output vector", () => {
-    //         beforeEach(() => { result = vecA.normalize(vecA); });
-    //         it("should place values into vecA", () => { expect(vecA).to.deep.equal(new Vector2D(1, 0)); });
-    //         it("should return vecA", () => { expect(result).to.equal(vecA); });
-    //     });
-    //     describe("without output vector", () => {
-    //         beforeEach(() => { result = vecA.normalize(); });
-    //         it("should not modify vecA", () => { expect(vecA).to.deep.equal(new Vector2D(5, 0)); });
-    //         it("should return a new vector", () => {
-    //             expect(result).to.deep.equal(new Vector2D(1, 0));
-    //         });
-    //     });
-    // });
+    describe("normalize", function () {
+        beforeEach(function () {
+            vecA = new Vector2D_1.Vector2D(5, 0);
+            vecB = new Vector2D_1.Vector2D(0, 5);
+            vecA.normalize();
+            vecB.normalize();
+        });
+        it("should normalize vectorA", function () {
+            chai_1.expect(vecA).deep.equal(new Vector2D_1.Vector2D(1, 0));
+        });
+        it("should normalize vectorB", function () {
+            chai_1.expect(vecB).deep.equal(new Vector2D_1.Vector2D(0, 1));
+        });
+    });
     describe("dot", function () {
         var dotResult;
         beforeEach(function () {
@@ -414,10 +395,13 @@ describe("Vector2D test", function () {
             crossResult = vecA.cross(vecB);
         });
         it("should return the cross product", function () {
-            chai_1.expect(crossResult).to.equal(-2);
+            chai_1.expect(crossResult).to.equal(vecA.x * vecB.y - vecA.y * vecB.x);
         });
         it("should not modify vecA", function () { chai_1.expect(vecA).to.deep.equal(new Vector2D_1.Vector2D(1, 2)); });
         it("should not modify vecB", function () { chai_1.expect(vecB).to.deep.equal(new Vector2D_1.Vector2D(3, 4)); });
+        it("should < 0 , because vecA on the left size of vecB", function () {
+            chai_1.expect(crossResult).to.lessThan(0);
+        });
     });
     describe("leftHandNormal", function () {
         describe("with out", function () {
@@ -496,12 +480,16 @@ describe("Vector2D test", function () {
         });
     });
     describe("fromPolar", function () {
+        var result2;
         beforeEach(function () {
             result = vecA.fromPolar(10, Math.PI / 6); // 30 degrees
+            result2 = vecB.fromPolar(10, 0);
         });
         it("should return the vector form", function () {
-            chai_1.expect(result).property("x").to.closeTo(8.660254, EPSILON);
-            chai_1.expect(result).property("y").to.closeTo(5, EPSILON);
+            chai_1.expect(result.x).to.closeTo(10 * Math.cos(Math.PI / 6), EPSILON);
+            chai_1.expect(result.y).to.closeTo(10 * Math.sin(Math.PI / 6), EPSILON);
+            chai_1.expect(result2.x).to.closeTo(10, EPSILON);
+            chai_1.expect(result2.y).to.closeTo(0, EPSILON);
         });
         it("should return vecA", function () {
             chai_1.expect(result).equal(vecA);

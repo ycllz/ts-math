@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import { Vector2D } from '../src/Vector2D';
 
-// some test are based on glmatrix
+// some tests are based on glmatrix
 describe("Vector2D test", () => {
 
     let vecA: Vector2D;
@@ -437,64 +437,38 @@ describe("Vector2D test", () => {
         it("should return the squared distance", () => { expect(dis).to.equal(8); });
     });
 
-    // describe("negate", () => {
-    //     describe("with a separate output vector", () => {
-    //         beforeEach(() => {
-    //             vecB = vecA.clone();
-    //             result = vecA.negate();
-    //         });
+    describe("negate", () => {
+        let x: number, y: number;
+        beforeEach(() => {
+            x = - vecA.x;
+            y = - vecA.y;
+            vecA.negate();
+        })
 
-    //         it("should place values into out", () => {
-    //             expect(out).to.deep.equal(new Vector2D(-1, -2));
-    //         });
-    //         it("should return out", () => { expect(result).to.equal(out); });
-    //         it("should not modify vecA", () => { expect(vecA).to.deep.equal(new Vector2D(1, 2)); });
-    //     });
+        it("should negate x", () => {
+            expect(vecA.x).to.equal(x);
+        });
+        it("should negate y", () => {
+            expect(vecA.y).to.equal(y);
+        })
+    })
 
-    //     describe("when vecA is the output vector", () => {
-    //         beforeEach(() => { result = vecA.negate(vecA); });
+    describe("normalize", () => {
+        beforeEach(() => {
+            vecA = new Vector2D(5, 0);
+            vecB = new Vector2D(0, 5);
+            vecA.normalize();
+            vecB.normalize();
+        })
+        it("should normalize vectorA", () => {
+            expect(vecA).deep.equal(new Vector2D(1, 0));
+        })
 
-    //         it("should place values into vecA", () => {
-    //             expect(vecA).to.deep.equal(new Vector2D(-1, -2));
-    //         });
-    //         it("should return vecA", () => { expect(result).to.equal(vecA); });
-    //     });
+        it("should normalize vectorB", () => {
+            expect(vecB).deep.equal(new Vector2D(0, 1));
+        })
 
-    //     describe("without output vector", () => {
-    //         beforeEach(() => { result = vecA.negate(); });
-    //         it("should not modify vecA", () => { expect(vecA).to.deep.equal(new Vector2D(1, 2)); });
-    //         it("should return a new vector", () => {
-    //             expect(result).to.deep.equal(new Vector2D(-1, -2));
-    //         });
-    //     });
-
-    // });
-
-    // describe("normalize", () => {
-    //     beforeEach(() => { vecA = new Vector2D(5, 0); });
-
-    //     describe("with a separate output vector", () => {
-    //         beforeEach(() => { result = vecA.normalize(out); });
-    //         it("should place values into out", () => { expect(out).to.deep.equal(new Vector2D(1, 0)); });
-    //         it("should return out", () => { expect(result).to.equal(out); });
-    //         it("should not modify vecA", () => { expect(vecA).to.deep.equal(new Vector2D(5, 0)); });
-    //     });
-
-    //     describe("when vecA is the output vector", () => {
-    //         beforeEach(() => { result = vecA.normalize(vecA); });
-
-    //         it("should place values into vecA", () => { expect(vecA).to.deep.equal(new Vector2D(1, 0)); });
-    //         it("should return vecA", () => { expect(result).to.equal(vecA); });
-    //     });
-    //     describe("without output vector", () => {
-    //         beforeEach(() => { result = vecA.normalize(); });
-    //         it("should not modify vecA", () => { expect(vecA).to.deep.equal(new Vector2D(5, 0)); });
-    //         it("should return a new vector", () => {
-    //             expect(result).to.deep.equal(new Vector2D(1, 0));
-    //         });
-    //     });
-
-    // });
+    })
 
     describe("dot", () => {
         let dotResult: number;
@@ -515,10 +489,13 @@ describe("Vector2D test", () => {
             crossResult = vecA.cross(vecB);
         });
         it("should return the cross product", () => {
-            expect(crossResult).to.equal(-2);
+            expect(crossResult).to.equal(vecA.x * vecB.y - vecA.y * vecB.x);
         });
         it("should not modify vecA", () => { expect(vecA).to.deep.equal(new Vector2D(1, 2)); });
         it("should not modify vecB", () => { expect(vecB).to.deep.equal(new Vector2D(3, 4)); });
+        it("should < 0 , because vecA on the left size of vecB", () => {
+            expect(crossResult).to.lessThan(0);
+        })
     });
 
     describe("leftHandNormal", () => {
@@ -609,16 +586,19 @@ describe("Vector2D test", () => {
     });
 
 
-
-
     describe("fromPolar", () => {
+        let result2: Vector2D;
         beforeEach(() => {
             result = vecA.fromPolar(10, Math.PI / 6); // 30 degrees
+            result2 = vecB.fromPolar(10, 0);
         });
         it("should return the vector form", () => {
-            expect(result).property("x").to.closeTo(8.660254, EPSILON);
-            expect(result).property("y").to.closeTo(5, EPSILON);
+            expect(result.x).to.closeTo(10 * Math.cos(Math.PI / 6), EPSILON);
+            expect(result.y).to.closeTo(10 * Math.sin(Math.PI / 6), EPSILON);
+            expect(result2.x).to.closeTo(10, EPSILON);
+            expect(result2.y).to.closeTo(0, EPSILON);
         });
+
         it("should return vecA", () => {
             expect(result).equal(vecA);
         });

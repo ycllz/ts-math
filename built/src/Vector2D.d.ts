@@ -48,44 +48,82 @@ export declare class Vector2D {
     length: number;
     /**
      * 取向量长度的平方，由于不用开方运算，效率更高
+     * @readonly
+     * @type {number}
+     * @memberOf Vector2D
      */
     readonly squaredLength: number;
     /**
      * 是否为0向量
+     * @readonly
+     * @type {boolean}
+     * @memberOf Vector2D
      */
     readonly isZero: boolean;
     /**
-     * out = this + v
+     * 向量相加
+     *
+     * @param {Vector2D} v
+     * @param {Vector2D}   省略则返回一个新创建的 Vector2D 否则复制到 out 向量
+     * @returns {Vector2D} out = this + v
+     *
+     * @memberOf Vector2D
      */
     add(v: Vector2D, out?: Vector2D): Vector2D;
     /**
-     * out = this - v
+     * 向量相减
+     * @param {Vector2D} v
+     * @param {Vector2D}   省略则返回一个新创建的 Vector2D 否则复制到 out 向量
+     * @return {Vector2D} out = this - v
      */
     subtract(v: Vector2D, out?: Vector2D): Vector2D;
     /**
-     * out = this multiply v
+     * 向量相乘
+     * @param {Vector2D} v
+     * @param {Vector2D}  省略则返回一个新创建的 Vector2D 否则复制到 out 向量
+     * @returns {Vector2D} out = this multiply v
+     *
+     * @memberOf Vector2D
      */
     multiply(v: Vector2D, out?: Vector2D): Vector2D;
     /**
-     * out  = this / v
+     * 向量相除
+     *
+     * @param {Vector2D} v
+     * @param {Vector2D}  省略则返回一个新创建的 Vector2D 否则复制到 out 向量
+     * @returns {Vector2D} out  = this / v
+     *
+     * @memberOf Vector2D
      */
     divide(v: Vector2D, out?: Vector2D): Vector2D;
     /**
-     * out = this * s
+     * 缩放向量
+     *
+     * @param {number} s
+     * @param {Vector2D}
+     * @returns {Vector2D} out = this * s
+     *
+     * @memberOf Vector2D
      */
     scale(s: number, out?: Vector2D): Vector2D;
     /**
      * 基于某个点缩放
-     *
+     * todo: 图形实例
      * @param {Vector2D} point 基于该点缩放
      * @param {number} sx (description)
      * @param {number} sy (description)
-     * @param {Vector2D} [out=undefined] (description)
+     * @param {Vector2D}  (description)
      * @returns {Vector2D} (description)
      */
     scaleAbout(point: Vector2D, sx: number, sy: number, out?: Vector2D): Vector2D;
     /**
-     * Adds two vec2's after scaling the second operand by a scalar value
+     * 与缩放过的v相加
+     * @param {Vector2D} v
+     * @param {number} scale
+     * @param {Vector2D}
+     * @returns {Vector2D}
+     *
+     * @memberOf Vector2D
      */
     scaleAndAdd(v: Vector2D, scale: number, out?: Vector2D): Vector2D;
     /**
@@ -96,9 +134,20 @@ export declare class Vector2D {
      * 此点到p2距离的平方
      */
     squaredDistanceTo(p2: Vector2D): number;
-    negate(out?: Vector2D): Vector2D;
+    /**
+     * x,y取负
+     * @warning 该方法修改自身
+     * @returns {Vector2D}
+     *
+     * @memberOf Vector2D
+     */
+    negate(): Vector2D;
     /**
      * 转为单位向量,数学上经常在向量上加个小帽子表示 :)
+     * @warning 修改自身
+     * @returns {Vector2D}
+     *
+     * @memberOf Vector2D
      */
     normalize(): Vector2D;
     /**
@@ -108,53 +157,50 @@ export declare class Vector2D {
      */
     dot(v: Vector2D): number;
     /**
-     * 2叉乘
+     * 2d叉乘
      * 2d叉乘并不常见，与3d不同，结果是一个数值，相当于3d叉乘的z轴
-     * @param v
+     *
+     * @param {Vector2D} v
+     * @returns {number}
+     *
+     * @memberOf Vector2D
      */
     cross(v: Vector2D): number;
     /**
-     * 左垂直向量
+     * 返回左垂直向量
+     *
+     * @param {Vector2D}
+     * @returns {Vector2D} 非单位向量
+     *
+     * @memberOf Vector2D
      */
     leftHandNormal(out?: Vector2D): Vector2D;
     /**
-     * 右垂直向量
+     * 返回右垂直向量
+     *
+     * @param {Vector2D}
+     * @returns {Vector2D} 非单位向量
+     *
+     * @memberOf Vector2D
      */
     rightHandNormal(out?: Vector2D): Vector2D;
     /**
-     *  取得此向量在v向量上的投影向量
-     *         /|
-     *   this / |
-     *       /  |
-     *      --------  v
-     *      ProjV
-     */
-    getProjV(v: Vector2D, out?: Vector2D): Vector2D;
-    /**
-     * 取得此向量在v法线上的投影向量
-     *
-     *         /|
-     *   this / | PerpV
-     *       /  |
-     *      --------
-     *          v
-     */
-    getPerpV(v: Vector2D, out?: Vector2D): Vector2D;
-    /**
      * 将极坐标转为笛卡尔坐标，此方法修改自身
      *
+     * @warning 修改自身
      * @param len 半径长度
      * @param radians 弧度值 ,逆时针正角度
      * @param return 返回自身
      */
     fromPolar(len: number, radians: number): Vector2D;
     /**
-     * 此向量转为极坐标输出
-     * 返回单位为弧度，如需要角度 自行乘以MathConsts.RADIANS_TO_DEGREES
-     *
-     * @param out 如果为空会返回一个新Object
-     * @returns {{r: number, radians: number}}
-     */
+      * 将此向量转为极坐标输出
+      *
+      * @param {{ len: number; radians: number }} [out] 如果为空会返回一个新Object
+      * @returns {{ len: number; radians: number }} 角度为弧度值表示
+      *
+      * @memberOf Vector2D
+      */
     toPolar(out?: {
         len: number;
         radians: number;
@@ -163,57 +209,119 @@ export declare class Vector2D {
         radians: number;
     };
     /**
-     * 按最大长度夹断，修改向量本身
-     * @param max
-     * @returns Vector2D
+     * 按最大长度夹断
+     *
+     * @warning 修改本身
+     * @param {number} max 最大长度
+     * @returns {Vector2D}
+     *
+     * @memberOf Vector2D
      */
     clampMax(max: number): Vector2D;
     /**
-     * 绕原点旋转一个角度 ，逆时针为正，浮点数计算会有误差
-     * @param angle  弧度值
-     */
-    rotate(angle: number, out?: Vector2D): Vector2D;
+      * 绕原点旋转一个角度 ，逆时针为正，浮点数计算会有误差
+      *
+      * @param {number} radians 弧度值
+      * @param {Vector2D} [out]
+      * @returns {Vector2D} 旋转后的向量
+      *
+      * @memberOf Vector2D
+      */
+    rotate(radians: number, out?: Vector2D): Vector2D;
     /**
      * 绕某个点旋转
-     * @param angle 弧度值
-     * @param point
+     * todo: example
+     *
+     * @param {number} radians 弧度值表示的角度
+     * @param {Vector2D} point
+     * @param {Vector2D} [out]
+     * @returns {Vector2D}
+     *
+     * @memberOf Vector2D
      */
-    rotateAbout(angle: number, point: Vector2D, out?: Vector2D): Vector2D;
+    rotateAbout(radians: number, point: Vector2D, out?: Vector2D): Vector2D;
     /**
-     * 旋转一个向量表示的角度，与rotate方法类似，要注意如果v非单位向量则旋转后向量长度会改变
-     * @param v
+     * 旋转一个向量表示的角度，与rotate方法类似，但节省了计算sin/cos所以效率更高
+     * 要注意如果v非单位向量则旋转后向量长度会改变
+     *
+     * @param {Vector2D} v
+     * @param {Vector2D} [out]
+     * @returns {Vector2D}
+     *
+     * @memberOf Vector2D
      */
     rotateByVector(v: Vector2D, out?: Vector2D): Vector2D;
     /**
-     * 根据入射角 = 反射角理论，计算此向量经过以法向量n表示的直线反射后得到的向量
-     * ---------------------------
-     * tail\  |  / head
-     *      \ |n/
-     *  head \|/ tail
-     *   ------------
-     * ---------------------------
-     * @param n 单位法向量
-     * @param result
+     *  取得此向量在v向量上的投影向量
+     *
+     * @param {Vector2D} v
+     * @param {Vector2D} [out]
      * @returns {Vector2D}
+     *
+     * @memberOf Vector2D
+     */
+    getProjV(v: Vector2D, out?: Vector2D): Vector2D;
+    /**
+      *
+      * 取得此向量在v法线上的投影向量
+      *
+      * @param {Vector2D} v
+      * @param {Vector2D} [out] 法向量
+      * @returns {Vector2D}
+      *
+      * @memberOf Vector2D
+      */
+    getPerpV(v: Vector2D, out?: Vector2D): Vector2D;
+    /**
+     * 根据入射角 = 反射角理论，计算此向量经过法向量反射后的向量
+     * @param n 单位法向量
+     * @param out 如果省略则返回全新向量
+     * @returns {Vector2D} 反射后得到的向量
      */
     reflect(n: Vector2D, out?: Vector2D): Vector2D;
     /**
-     * 从另一个向量拷贝xy值，此方法修改自身
+     * 从另一个向量拷贝xy值
+     *
+     * @warning 此方法修改自身
+     * @param {Vector2D} v
+     * @returns {Vector2D}
+     *
+     * @memberOf Vector2D
      */
     copyFrom(v: Vector2D): Vector2D;
     /**
      * 复制到目标向量
+     *
+     * @param {Vector2D} out 目标向量
+     *
+     * @memberOf Vector2D
      */
     copyTo(out: Vector2D): void;
     /**
-     * 重设x y值，此方法修改自身
+     * 重设x y值
+     *
+     * @warning 此方法修改自身
+     * @param {number} [x=0]
+     * @param {number} [y=0]
+     * @returns {Vector2D}
+     *
+     * @memberOf Vector2D
      */
     reset(x?: number, y?: number): Vector2D;
     /**
-     * (description)
+     * 复制一个向量
      *
-     * @returns {Vector2D} (description)
+     * @returns {Vector2D}
+     *
+     * @memberOf Vector2D
      */
     clone(): Vector2D;
+    /**
+     * 输出字符串
+     *
+     * @returns {string}
+     *
+     * @memberOf Vector2D
+     */
     toString(): string;
 }
