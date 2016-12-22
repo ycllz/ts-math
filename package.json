@@ -10,6 +10,7 @@
     "build": "tsc",
     "pretest": "npm run build",
     "test": "mocha built/test/**/*.js",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha ./built/test/**/*.js",
     "docs": "typedoc --out ./docs ./src --readme ./README.md --module commonjs --target ES5 --theme minimal"
   },
   "repository": {
@@ -31,7 +32,10 @@
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.33",
     "chai": "^3.5.0",
+    "coveralls": "^2.11.15",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
+    "mocha-lcov-reporter": "^1.2.0",
     "rimraf": "^2.5.4",
     "typedoc": "^0.5.1",
     "typescript": "^2.1.4"
