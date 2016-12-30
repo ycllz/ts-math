@@ -4,4 +4,5 @@ function __export(m) {
 }
 __export(require("./src/Vector2D"));
 __export(require("./src/Matrix2D"));
+__export(require("./src/Utils"));
 //# sourceMappingURL=index.js.map
